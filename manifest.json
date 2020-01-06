@@ -1,0 +1,22 @@
+{
+    "name": "Football App",
+    "short_name": "Van's",
+    "description": "Sebuah aplikasi sepakbola",
+    "start_url": "/index.html",
+    "display": "minimal-ui",
+    "background_color": "#000000",
+    "theme_color": "#f7f7f7",
+    "icons": [
+        {
+            "src": "/images/E_logo_192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/E_logo_512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "gcm_sender_id": "886412040727"
+}
