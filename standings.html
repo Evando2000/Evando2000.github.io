@@ -8,10 +8,10 @@
     <link rel="icon" href="/images/E_logo_192.png">
     <link rel="apple-touch-icon" href="/images/E_logo_192.png">
     <link rel="stylesheet" href="css/materialize.min.css" />
-    <link rel="stylesheet" href="css/my_own.css" />
     <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#f7f7f7" />
+    <meta name="theme-color" content="#283593" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/my_own.css" />
   </head>
   <body>
        <!-- Navigasi -->
@@ -30,22 +30,65 @@
       </div>
     </nav>
     <!-- Akhir Navigasi -->
+
+    <div class="preloader-wrapper big active" id="loader">
+      <div class="spinner-layer spinner-blue">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+  
+      <div class="spinner-layer spinner-red">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+  
+      <div class="spinner-layer spinner-yellow">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+  
+      <div class="spinner-layer spinner-green">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
+    
     <div class="container">
-      <div class="card">
-        <div class="table-responsive">
-          <table class="table centered" id="saved-standings"></table>
+      <div class="row">
+        <div class="col s12 m7">
+          <table class="centered" id="saved-standings"></table>
         </div>
       </div>
     </div>
     
     <div class="fixed-action-btn">
-      <a class="btn-floating btn-large red" id="save">
+      <a class="btn-floating btn-large red fab" id="save">
       <i class="large material-icons">save</i>
       </a>
     </div>
 
     <div class="fixed-action-btn">
-      <a class="btn-floating btn-large red" id="btn-delete" href="./index.html">
+      <a class="btn-floating btn-large red fab" id="btn-delete" href="./index.html">
       <i class="large material-icons">delete</i>
       </a>
     </div>
@@ -54,6 +97,7 @@
       type="text/javascript"
       src="https://unpkg.com/snarkdown@1.0.2/dist/snarkdown.umd.js"
     ></script>
+    <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/materialize.min.js"></script>
     <script src="js/serv-reg.js"></script>
     <script src="js/idb.js"></script>

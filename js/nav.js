@@ -1,3 +1,7 @@
+$(window).on("load", function() {
+  $('#loader').hide();
+});
+
 document.addEventListener("DOMContentLoaded", function() {
     getCompetitions();
     // Activate sidebar nav

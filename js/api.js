@@ -26,39 +26,7 @@ function getCompetitions() {
     caches.match(base_url + "competitions/").then(function(response) {
       if (response) {
         response.json().then(function (data) {
-          var standingsHTML = "";
-          data.competitions.forEach(function(compe) {
-            if(compe.id === 2001||compe.id === 2002||compe.id === 2003||compe.id === 2021||compe.id === 2014||compe.id === 2015){
-              let compeImage = compe.emblemUrl;
-              if(compe.id === 2021){
-                compeImage = "images/PL.png";
-              }else if(compe.id === 2015){
-                compeImage = "images/L1.png";
-              }else if(compe.id === 2002){
-                compeImage = "images/BL.png";
-              }else if(compe.id === 2003){
-                compeImage = "images/ER.png";
-              }else if(compe.id === 2014){
-                compeImage = "images/PD.jpg";
-              }else if(compeImage === null){
-                compeImage = "images/football.jpg";
-              }
-              standingsHTML += `
-                    <div class="card">
-                      <a href="./standings.html?id=${compe.id}">
-                        <div class="card-image waves-effect waves-block waves-light">
-                          <img src="${compeImage}" />
-                        </div>
-                      </a>
-                      <div class="card-content">
-                        <span class="card-title truncate">${compe.name}</span>
-                      </div>
-                    </div>
-                  `;
-            }
-          });
-          // Sisipkan komponen card ke dalam elemen dengan id #body-content
-          document.getElementById("body-content").innerHTML = standingsHTML;
+          createCard(data);
         })
       }
     })
@@ -68,41 +36,7 @@ function getCompetitions() {
     .then(status)
     .then(json)
     .then(function(data) {
-      // Objek/array JavaScript dari response.json() masuk lewat data.
-      // Menyusun komponen card artikel secara dinamis
-      var standingsHTML = "";
-      data.competitions.forEach(function(compe) {
-        if(compe.id === 2001||compe.id === 2002||compe.id === 2003||compe.id === 2021||compe.id === 2014||compe.id === 2015){
-          let compeImage = compe.emblemUrl;
-          if(compe.id === 2021){
-            compeImage = "images/PL.png";
-          }else if(compe.id === 2015){
-            compeImage = "images/L1.png";
-          }else if(compe.id === 2002){
-            compeImage = "images/BL.png";
-          }else if(compe.id === 2003){
-            compeImage = "images/ER.png";
-          }else if(compe.id === 2014){
-            compeImage = "images/PD.jpg";
-          }else if(compeImage === null){
-            compeImage = "images/football.jpg";
-          }
-          standingsHTML += `
-                <div class="card">
-                  <a href="./standings.html?id=${compe.id}">
-                    <div class="card-image waves-effect waves-block waves-light">
-                      <img src="${compeImage}" />
-                    </div>
-                  </a>
-                  <div class="card-content">
-                    <span class="card-title truncate">${compe.name}</span>
-                  </div>
-                </div>
-              `;
-        }
-      });
-      // Sisipkan komponen card ke dalam elemen dengan id #standing-list
-      document.getElementById("standing-list").innerHTML = standingsHTML;
+      createCard(data);
     })
     .catch(error);
 }
@@ -116,62 +50,7 @@ function getCompeById() {
       caches.match(base_url + "competitions/"+ idCompe +"/standings",{headers:{'X-Auth-Token':TOKEN_API}}).then(function(response) {
         if (response) {
           response.json().then(function(data) {
-            var compeName = data.competition.name;
-            var standingsHTML = "";
-            standingsHTML += `<h1>${compeName}</h1>`;
-            data.standings.forEach(function(compe) {
-              if(idCompe == 2001){
-                var groupName = compe.group;
-                groupName = groupName.replace("_"," ");
-              }else{
-                groupName = compeName;
-              }
-              if(compe.type === "TOTAL"){
-                standingsHTML += `
-                <div class="col s12 m7">
-                <h3 style="text-align:center">${groupName}</h3>
-                    <thead>
-                      <tr>
-                        <th>Position</th>
-                        <th>Team</th>
-                        <th>Games Played</th>
-                        <th>Won</th>
-                        <th>Draw</th>
-                        <th>Lost</th>
-                        <th>Points</th>
-                        <th>GF</th>
-                        <th>GA</th>
-                        <th>GD</th>
-                      </tr>
-                    </thead>
-
-                `;
-                compe.table.forEach(function(teams) {
-                  standingsHTML += `
-                    <tbody>
-                      <tr>
-                        <td>${teams.position}</td>
-                        <td>
-                            <img src="${teams.team.crestUrl}" width="100px" height="100px" />
-                            <p>${teams.team.name}</p>
-                        </td>
-                        <td>${teams.playedGames}</td>
-                        <td>${teams.won}</td>
-                        <td>${teams.draw}</td>
-                        <td>${teams.lost}</td>
-                        <td>${teams.points}</td>
-                        <td>${teams.goalsFor}</td>
-                        <td>${teams.goalsAgainst}</td>
-                        <td>${teams.goalDifference}</td>
-                      </tr>
-                    </tbody>
-                    `;
-                });
-                standingsHTML += `</div>`;
-              }
-            });
-            document.getElementById("saved-standings").innerHTML = standingsHTML;
-            // Kirim objek data hasil parsing json agar bisa disimpan ke indexed db
+            createTable(idCompe, data);
             resolve(data);
           });
         }
@@ -181,63 +60,7 @@ function getCompeById() {
       .then(status)
       .then(json)
       .then(function(data) {
-        var compeName = data.competition.name;
-        var standingsHTML = "";
-        standingsHTML += `<h1>${compeName}</h1>`;
-        data.standings.forEach(function(compe) {
-          if(idCompe == 2001){
-            var groupName = compe.group;
-            groupName = groupName.replace("_"," ");
-          }else{
-            groupName = compeName;
-          }
-          if(compe.type === "TOTAL"){
-            standingsHTML += `
-            <div class="col s12 m7">
-            <h3 style="text-align:center">${groupName}</h3>
-                <thead>
-                  <tr>
-                    <th>Position</th>
-                    <th>Team</th>
-                    <th>Games Played</th>
-                    <th>Won</th>
-                    <th>Draw</th>
-                    <th>Lost</th>
-                    <th>Points</th>
-                    <th>GF</th>
-                    <th>GA</th>
-                    <th>GD</th>
-                  </tr>
-                </thead>
-
-            `;
-            compe.table.forEach(function(teams) {
-              standingsHTML += `
-                <tbody>
-                  <tr>
-                    <td>${teams.position}</td>
-                    <td>
-                        <img src="${teams.team.crestUrl}" width="100px" height="100px" />
-                        <p>${teams.team.name}</p>
-                    </td>
-                    <td>${teams.playedGames}</td>
-                    <td>${teams.won}</td>
-                    <td>${teams.draw}</td>
-                    <td>${teams.lost}</td>
-                    <td>${teams.points}</td>
-                    <td>${teams.goalsFor}</td>
-                    <td>${teams.goalsAgainst}</td>
-                    <td>${teams.goalDifference}</td>
-                  </tr>
-                </tbody>
-                `;
-            });
-            standingsHTML += `</div>`;
-          }
-        });
-        
-        document.getElementById("saved-standings").innerHTML = standingsHTML;
-        // Kirim objek data hasil parsing json agar bisa disimpan ke indexed db
+        createTable(idCompe, data);
         resolve(data);
       });
   });
@@ -286,62 +109,101 @@ function getSavedCompeById() {
   var idParam = urlParams.get("id");
   return new Promise(function(resolve, reject) {
   getById(idParam).then(function(data) {
-    var compeName = data.competition.name;
-    var standingsHTML = "";
-    standingsHTML += `<h1>${compeName}</h1>`;
-    data.standings.forEach(function(compe) {
-      if(idParam == 2001){
-        var groupName = compe.group;
-        groupName = groupName.replace("_"," ");
-      }else{
-        groupName = compeName;
-      }
-      if(compe.type === "TOTAL"){
-        standingsHTML += `
-        <div class="col s12 m7">
-        <h3 style="text-align:center">${groupName}</h3>
-            <thead>
-              <tr>
-                <th>Position</th>
-                <th>Team</th>
-                <th>Games Played</th>
-                <th>Won</th>
-                <th>Draw</th>
-                <th>Lost</th>
-                <th>Points</th>
-                <th>GF</th>
-                <th>GA</th>
-                <th>GD</th>
-              </tr>
-            </thead>
-
-        `;
-        compe.table.forEach(function(teams) {
-          standingsHTML += `
-            <tbody>
-              <tr>
-                <td>${teams.position}</td>
-                <td>
-                    <img src="${teams.team.crestUrl}" width="100px" height="100px" />
-                    <p>${teams.team.name}</p>
-                </td>
-                <td>${teams.playedGames}</td>
-                <td>${teams.won}</td>
-                <td>${teams.draw}</td>
-                <td>${teams.lost}</td>
-                <td>${teams.points}</td>
-                <td>${teams.goalsFor}</td>
-                <td>${teams.goalsAgainst}</td>
-                <td>${teams.goalDifference}</td>
-              </tr>
-            </tbody>
-            `;
-        });
-        standingsHTML += `</div>`;
-      }
+      createTable(idParam, data);
+      resolve (data);
     });
-    document.getElementById("saved-standings").innerHTML = standingsHTML;
-    resolve(data);
   });
+}
+
+function createCard(data){
+  // Objek/array JavaScript dari response.json() masuk lewat data.
+  // Menyusun komponen card artikel secara dinamis
+  var standingsHTML = "";
+  data.competitions.forEach(function(compe) {
+    if(compe.id === 2001||compe.id === 2002||compe.id === 2003||compe.id === 2021||compe.id === 2014||compe.id === 2015){
+      let compeImage = compe.emblemUrl;
+      if(compe.id === 2021){
+        compeImage = "images/PL.png";
+      }else if(compe.id === 2015){
+        compeImage = "images/L1.png";
+      }else if(compe.id === 2002){
+        compeImage = "images/BL.png";
+      }else if(compe.id === 2003){
+        compeImage = "images/ER.png";
+      }else if(compe.id === 2014){
+        compeImage = "images/PD.jpg";
+      }else if(compeImage === null){
+        compeImage = "images/football.jpg";
+      }
+      standingsHTML += `
+            <div class="card">
+              <a href="./standings.html?id=${compe.id}">
+                <div class="card-image waves-effect waves-block waves-light">
+                  <img src="${compeImage}" />
+                </div>
+              </a>
+              <div class="card-content">
+                <span class="card-title truncate">${compe.name}</span>
+              </div>
+            </div>
+          `;
+    }
   });
+  // Sisipkan komponen card ke dalam elemen dengan id #standing-list
+  document.getElementById("body-content").innerHTML = standingsHTML;
+}
+
+function createTable(idParam, data){
+  $('#loader').hide();
+  var compeName = data.competition.name;
+  var standingsHTML = "";
+  
+  data.standings.forEach(function(compe) {
+    if(idParam == 2001){
+      var groupName = compe.group;
+      groupName = groupName.replace("_"," ");
+    }else{
+      groupName = compeName;
+    }
+    if(compe.type === "TOTAL"){
+      standingsHTML += `
+          <thead>
+            <tr>
+              <th>Position</th>
+              <th>Team</th>
+              <th>Games Played</th>
+              <th>Won</th>
+              <th>Draw</th>
+              <th>Lost</th>
+              <th>Points</th>
+              <th>GF</th>
+              <th>GA</th>
+              <th>GD</th>
+            </tr>
+          </thead>
+      `;
+      compe.table.forEach(function(teams) {
+        standingsHTML += `
+        <tbody>
+            <tr>
+              <td>${teams.position}</td>
+              <td>
+                  <img src="${teams.team.crestUrl}" class="img-team"/>
+                  <p>${teams.team.name}</p>
+              </td>
+              <td>${teams.playedGames}</td>
+              <td>${teams.won}</td>
+              <td>${teams.draw}</td>
+              <td>${teams.lost}</td>
+              <td>${teams.points}</td>
+              <td>${teams.goalsFor}</td>
+              <td>${teams.goalsAgainst}</td>
+              <td>${teams.goalDifference}</td>
+            </tr>
+          </tbody>
+          `;
+      });
+    }
+  });
+  document.getElementById("saved-standings").innerHTML = standingsHTML;
 }

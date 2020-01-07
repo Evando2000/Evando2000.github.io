@@ -19,14 +19,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
     btnSave.onclick = function() {
         alert("Berhasil Tersimpan");
-        item.then(function(article) {
-            saveForLater(article);
+        item.then(function(standing) {
+            saveForLater(standing);
         });
     };
 
     btnDelete.onclick = function() {
         alert("Berhasil Terhapus");
-        item.then(function(article) {
+        item.then(function(standing) {
             deleteCompe(getId);
         });
     };

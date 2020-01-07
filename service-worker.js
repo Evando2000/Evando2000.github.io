@@ -34,11 +34,14 @@ workbox.precaching.precacheAndRoute([
   { url: '/js/api.js', revision: '1' },
   { url: '/js/db.js', revision: '1' },
   { url: '/js/idb.js', revision: '1' },
+  { url: '/js/jquery-3.4.1.min.js', revision: '1' },
   { url: '/js/materialize.js', revision: '1' },
   { url: '/js/materialize.min.js', revision: '1' },
   { url: '/js/nav.js', revision: '1' },
   { url: '/js/serv-reg.js', revision: '1' }
-]);
+], {
+ignoreUrlParametersMatching: [/.*/]
+});
 
 // Menyimpan cache untuk file font selama 1 tahun
 workbox.routing.registerRoute(

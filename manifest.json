@@ -4,8 +4,8 @@
     "description": "Sebuah aplikasi sepakbola",
     "start_url": "/index.html",
     "display": "minimal-ui",
-    "background_color": "#000000",
-    "theme_color": "#f7f7f7",
+    "background_color": "#ffffff",
+    "theme_color": "#283593",
     "icons": [
         {
             "src": "/images/E_logo_192.png",
